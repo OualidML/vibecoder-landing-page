@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إتمام الطلب | دليل عالق البرمجة بالذكاء الاصطناعي</title>
+  <meta name="description" content="إتمام طلب الحصول على دليل عالق البرمجة بالذكاء الاصطناعي عبر بريدي موب / البطاقة الذهبية في الجزائر.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20%220%22%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+
+  <!-- Google Fonts: Cairo, Tajawal, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'Tajawal', 'system-ui', 'sans-serif'],
+            arabic: ['Cairo', 'Tajawal', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              yellow: '#EAB308',
+              yellowHover: '#FACC15',
+              cyan: '#06B6D4',
+              cyanHover: '#22D3EE',
+              dark: '#0B1120',
+              slate950: '#030712',
+              whatsapp: '#25D366',
+              whatsappHover: '#22C55E',
+            }
+          },
+          boxShadow: {
+            'glow-yellow': '0 0 35px -5px rgba(234, 179, 8, 0.45)',
+            'glow-yellow-lg': '0 0 55px -5px rgba(234, 179, 8, 0.65)',
+            'glow-cyan': '0 0 30px -5px rgba(6, 182, 212, 0.45)',
+            'glow-green': '0 0 35px -5px rgba(37, 211, 102, 0.5)',
+            'glow-green-lg': '0 0 55px -5px rgba(37, 211, 102, 0.7)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Cairo', 'Tajawal', sans-serif;
+      background-color: #030712;
+      overflow-x: hidden;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Glassmorphism Card */
+    .glass-card-dark {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-100 antialiased selection:bg-cyan-500 selection:text-slate-950 min-h-screen flex flex-col justify-between">
+
+  <!-- Ambient Background Glows -->
+  <div class="fixed top-1/4 -right-28 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="fixed bottom-10 -left-28 w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="fixed inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:24px_24px] opacity-20 pointer-events-none"></div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="relative z-20 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-3 group focus:outline-none">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 via-amber-500 to-cyan-500 p-0.5 shadow-glow-cyan group-hover:scale-105 transition-transform duration-300">
+            <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+              <span class="text-xl">⚡</span>
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-mono font-black text-lg tracking-tight text-white group-hover:text-cyan-300 transition-colors" dir="ltr">VibeCoder Kit</span>
+            <span class="text-[11px] text-slate-400 font-semibold -mt-1">دليل النجاة البرمجي</span>
+          </div>
+        </a>
+
+        <!-- Back to Home Link -->
+        <a href="index.html" class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-400 hover:text-cyan-400 transition-colors">
+          <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          <span>العودة للرئيسية</span>
+        </a>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="relative z-10 my-auto py-12 lg:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        
+        <!-- =================================================================== -->
+        <!-- LEFT COLUMN: Order Summary & Trust (Desktop Left / Mobile Stacked) -->
+        <!-- =================================================================== -->
+        <div class="lg:col-span-5 order-2 lg:order-1 space-y-6">
+          
+          <!-- Summary Card -->
+          <div class="glass-card-dark rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-2xl relative overflow-hidden">
+            
+            <!-- Glow Accent -->
+            <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+            <!-- Top Header & Icon -->
+            <div class="flex items-center justify-between pb-6 border-b border-slate-800 mb-6">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-700/80 flex items-center justify-center text-2xl text-cyan-400 shadow-inner">
+                  ⚡
+                </div>
+                <div>
+                  <span class="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider block" dir="ltr">DIGITAL PACKAGE</span>
+                  <h1 class="text-lg sm:text-xl font-black text-white">إتمام الطلب - دليل عالق البرمجة</h1>
+                </div>
+              </div>
+            </div>
+
+            <!-- Price Display (Highlighted with Yellow Glow) -->
+            <div class="rounded-2xl bg-gradient-to-r from-amber-950/40 via-slate-900 to-yellow-950/40 border-2 border-yellow-500/60 p-5 mb-6 text-center shadow-glow-yellow">
+              <span class="text-xs text-yellow-300/90 font-bold block mb-1">السعر النهائي للحزمة الكترونية الكاملة</span>
+              <div class="flex items-center justify-center gap-2">
+                <span class="text-4xl sm:text-5xl font-black text-yellow-400 font-mono tracking-tight">2,000</span>
+                <span class="text-xl font-black text-yellow-300">د.ج</span>
+              </div>
+              <span class="text-[11px] text-slate-400 mt-1 block">بدون أي رسوم خفية • تحميل فوري ومباشر</span>
+            </div>
+
+            <!-- Feature Bullet Points -->
+            <div class="space-y-4 mb-8">
+              <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">يشمل الطلب على:</h3>
+              
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-lg bg-emerald-950 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-xs shrink-0 mt-0.5">
+                  ✓
+                </div>
+                <span class="text-slate-200 text-sm font-semibold">تسليم مباشر بصيغة PDF عالي الدقة</span>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-lg bg-cyan-950 border border-cyan-500/40 flex items-center justify-center text-cyan-400 text-xs shrink-0 mt-0.5">
+                  ✓
+                </div>
+                <span class="text-slate-200 text-sm font-semibold">أكثر من 50 برومبت إنقاذ جاهزة للنسخ المباشر</span>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-lg bg-yellow-950 border border-yellow-500/40 flex items-center justify-center text-yellow-400 text-xs shrink-0 mt-0.5">
+                  ✓
+                </div>
+                <span class="text-slate-200 text-sm font-semibold">فرصة الانضمام لبرنامج الشركاء (25% عمولة نقدية لكل مبيعة)</span>
+              </div>
+            </div>
+
+            <!-- Trust & Security Badges Box -->
+            <div class="pt-6 border-t border-slate-800/80 space-y-3">
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs text-slate-300 font-semibold">
+                <div class="w-8 h-8 rounded-lg bg-yellow-400/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400 shrink-0 text-base">
+                  💳
+                </div>
+                <div>
+                  <span class="text-white font-bold block">دفع محلي آمن عبر بريدي موب</span>
+                  <span class="text-[11px] text-slate-400">تحويل مباشر وسهل عبر تطبيق BaridiMob</span>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-xs text-slate-300 font-semibold">
+                <div class="w-8 h-8 rounded-lg bg-emerald-400/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 text-base">
+                  🛡️
+                </div>
+                <div>
+                  <span class="text-white font-bold block">ضمان وصول فوري 100%</span>
+                  <span class="text-[11px] text-slate-400">استلام الملفات فور تأكيد التحويل</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- RIGHT COLUMN: The Intake Form & Payment Action -->
+        <!-- =================================================================== -->
+        <div class="lg:col-span-7 order-1 lg:order-2">
+          
+          <div class="glass-card-dark rounded-3xl p-6 sm:p-10 border border-slate-800 shadow-2xl relative">
+            
+            <!-- Section Title -->
+            <div class="mb-8">
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-cyan-400/10 text-cyan-400 border border-cyan-500/30 inline-block mb-3">
+                خطوة واحدة فقط
+              </span>
+              <h2 class="text-2xl sm:text-3xl font-black text-white">بيانات الاستلام</h2>
+              <p class="text-slate-400 text-xs sm:text-sm mt-1">
+                يرجى أدخال معلوماتك الصحيحة لربط نسخة الدليل بحسابك وإرسالها فوراً.
+              </p>
+            </div>
+
+            <!-- Intake Form -->
+            <form id="checkout-form" class="space-y-6" novalidate>
+              
+              <!-- 1. Full Name -->
+              <div>
+                <label for="full-name" class="block text-xs font-bold text-slate-300 mb-2">
+                  الاسم الكامل <span class="text-rose-400">*</span>
+                </label>
+                <div class="relative">
+                  <input type="text" id="full-name" required placeholder="مثال: محمد الأمين" class="w-full px-4 py-3.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors text-sm font-medium" />
+                </div>
+              </div>
+
+              <!-- 2. Phone Number / BaridiMob -->
+              <div>
+                <label for="phone-number" class="block text-xs font-bold text-slate-300 mb-2">
+                  رقم الهاتف / بريدي موب <span class="text-rose-400">*</span>
+                </label>
+                <div class="relative" dir="ltr">
+                  <input type="tel" id="phone-number" required placeholder="0655XX XX XX" class="w-full px-4 py-3.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors text-sm font-mono font-medium text-right" dir="rtl" />
+                </div>
+              </div>
+
+              <!-- 3. Email Address -->
+              <div>
+                <label for="email-address" class="block text-xs font-bold text-slate-300 mb-2">
+                  البريد الإلكتروني <span class="text-rose-400">*</span>
+                </label>
+                <div class="relative">
+                  <input type="email" id="email-address" required placeholder="name@example.com" class="w-full px-4 py-3.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors text-sm font-mono font-medium text-left" dir="ltr" />
+                </div>
+              </div>
+
+              <!-- 4. Referral Code (Optional) -->
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <label for="referral-code" class="block text-xs font-bold text-slate-300">
+                    كود إحالة الصديق
+                  </label>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                    اختياري
+                  </span>
+                </div>
+                <div class="relative">
+                  <input type="text" id="referral-code" placeholder="أدخل كود صديقك للحصول على الميزة (إن وجد)" class="w-full px-4 py-3.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-colors text-sm font-medium" />
+                </div>
+              </div>
+
+              <!-- Payment Process Info Box -->
+              <div class="rounded-2xl bg-yellow-500/10 border border-yellow-500/30 p-4 sm:p-5 flex items-start gap-3 text-xs sm:text-sm text-yellow-200/90 leading-relaxed">
+                <span class="text-xl shrink-0 mt-0.5">ℹ️</span>
+                <div>
+                  <strong class="text-yellow-300 font-bold block mb-1">كيف تكتمل عملية الدفع؟</strong>
+                  بمجرد تأكيد الطلب، سيتم توجيهك لخدمة العملاء عبر واتساب لإتمام الدفع عبر (بريدي موب) واستلام نسختك المخصصة فوراً.
+                </div>
+              </div>
+
+              <!-- Error Feedback Container -->
+              <div id="form-error" class="hidden p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-bold text-center">
+                يرجى ملء جميع الحقول المطلوبة بشكل صحيح.
+              </div>
+
+              <!-- WhatsApp CTA Button -->
+              <button type="submit" id="submit-btn" class="w-full group inline-flex items-center justify-center gap-3 px-8 py-5 rounded-2xl font-black text-lg sm:text-xl bg-green-500 hover:bg-green-400 text-slate-950 shadow-glow-green hover:shadow-glow-green-lg transform hover:-translate-y-1 active:translate-y-0 transition-all duration-200">
+                <!-- WhatsApp SVG Icon -->
+                <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                </svg>
+                <span>تأكيد الطلب واستلام الدليل عبر واتساب</span>
+              </button>
+
+              <div class="text-center text-[11px] text-slate-500 font-semibold">
+                🔒 جميع بياناتك محمية ومشفرة 100% ولن يتم مشاركتها أبداً.
+              </div>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Simple Footer -->
+  <footer class="relative z-10 py-8 border-t border-slate-900 text-center text-slate-500 text-xs">
+    <div class="max-w-7xl mx-auto px-4">
+      &copy; <span id="current-year">2025</span> VibeCoder Kit. جميع الحقوق محفوظة.
+    </div>
+  </footer>
+
+  <!-- Vanilla JS Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Configurable WhatsApp Phone Number (213 = Algeria)
+      const WHATSAPP_NUMBER = '213652129011'; // Replace with your actual WhatsApp contact number
+
+      const form = document.getElementById('checkout-form');
+      const nameInput = document.getElementById('full-name');
+      const phoneInput = document.getElementById('phone-number');
+      const emailInput = document.getElementById('email-address');
+      const referralInput = document.getElementById('referral-code');
+      const errorDiv = document.getElementById('form-error');
+
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+
+          const name = nameInput.value.trim();
+          const phone = phoneInput.value.trim();
+          const email = emailInput.value.trim();
+          const referral = referralInput.value.trim() || 'لا يوجد';
+
+          // Basic validation
+          if (!name || !phone || !email || !email.includes('@')) {
+            errorDiv.classList.remove('hidden');
+            errorDiv.textContent = 'يرجى إدخال الاسم، رقم الهاتف، والبريد الإلكتروني بشكل صحيح.';
+            return;
+          }
+
+          errorDiv.classList.add('hidden');
+
+          // Construct formatted WhatsApp message
+          const rawMessage = `مرحباً، أريد شراء دليل عالق البرمجة.
+الاسم: ${name}
+رقم الهاتف: ${phone}
+البريد: ${email}
+كود الإحالة: ${referral}`;
+
+          // Safely encode URI parameters
+          const encodedMessage = encodeURIComponent(rawMessage);
+          const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+
+          // Redirect user to WhatsApp Bridge
+          window.location.href = whatsappUrl;
+        });
+      }
+
+      // Dynamic Year
+      const yearEl = document.getElementById('current-year');
+      if (yearEl) {
+        yearEl.textContent = new Date().getFullYear();
+      }
+    });
+  </script>
+
+</body>
+</html>

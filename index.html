@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دليل عالق البرمجة بالذكاء الاصطناعي | The Stuck Vibe-Coder's Arabic Survival Kit</title>
+  <meta name="description" content="الدليل الميداني الشامل باللغة العربية لمبرمجي الـ Vibe Coding. تخلص من أخطاء Cursor و Firebase وحلقات الذكاء الاصطناعي المفرغة واطلق تطبيقك الآن.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20%220%22%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+
+  <!-- Google Fonts: Cairo, Tajawal, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'Tajawal', 'system-ui', 'sans-serif'],
+            arabic: ['Cairo', 'Tajawal', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              yellow: '#EAB308',
+              yellowHover: '#FACC15',
+              cyan: '#06B6D4',
+              cyanHover: '#22D3EE',
+              dark: '#0B1120',
+              slate950: '#030712',
+            }
+          },
+          boxShadow: {
+            'glow-yellow': '0 0 35px -5px rgba(234, 179, 8, 0.45)',
+            'glow-yellow-lg': '0 0 55px -5px rgba(234, 179, 8, 0.65)',
+            'glow-cyan': '0 0 30px -5px rgba(6, 182, 212, 0.45)',
+            'glow-cyan-lg': '0 0 50px -5px rgba(6, 182, 212, 0.65)',
+            '3d-book': '25px 25px 50px -10px rgba(0, 0, 0, 0.7), -10px 10px 30px rgba(6, 182, 212, 0.15)',
+          },
+          animation: {
+            'pulse-subtle': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float-slow': 'float 6s ease-in-out infinite',
+            'float-delayed': 'float 7s ease-in-out 2s infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-12px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom CSS Enhancements */
+    body {
+      font-family: 'Cairo', 'Tajawal', sans-serif;
+      overflow-x: hidden;
+      background-color: #030712;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Directional isolation utilities */
+    .ltr-inline {
+      direction: ltr;
+      display: inline-block;
+      unicode-bidi: isolate;
+    }
+
+    /* 3D Book Mockup Styles */
+    .book-perspective {
+      perspective: 1400px;
+    }
+
+    .book-container {
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .book-container:hover {
+      transform: rotateY(-8deg) rotateX(4deg) scale(1.02);
+    }
+
+    /* Book Spine simulation */
+    .book-spine {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 32px;
+      height: 100%;
+      background: linear-gradient(90deg, #0f172a 0%, #1e293b 60%, #0f172a 100%);
+      transform: translateX(16px) rotateY(90deg);
+      border-radius: 4px 0 0 4px;
+    }
+
+    /* Page edges simulation */
+    .book-pages {
+      position: absolute;
+      top: 3px;
+      left: 0;
+      width: 24px;
+      height: calc(100% - 6px);
+      background: repeating-linear-gradient(
+        to bottom,
+        #f1f5f9,
+        #f1f5f9 2px,
+        #cbd5e1 2px,
+        #cbd5e1 4px
+      );
+      transform: translateX(-12px) rotateY(-90deg);
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Glassmorphism */
+    .glass-nav {
+      background: rgba(11, 17, 32, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .glass-card-dark {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Code Block Custom Styling */
+    .code-scroll::-webkit-scrollbar {
+      height: 6px;
+    }
+    .code-scroll::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    .code-scroll::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+
+    /* Smooth accordion transition */
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0, 1, 0, 1);
+    }
+
+    .accordion-content.open {
+      max-height: 500px;
+      transition: max-height 0.4s ease-in-out;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-100 antialiased selection:bg-cyan-500 selection:text-slate-950">
+
+  <!-- ========================================================================= -->
+  <!-- 1. NAVIGATION BAR -->
+  <!-- ========================================================================= -->
+  <header class="fixed top-0 inset-x-0 z-50 glass-nav border-b border-slate-800/80 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo (Right in RTL) -->
+        <a href="#" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-cyan-400 rounded-lg p-1">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 via-amber-500 to-cyan-500 p-0.5 shadow-glow-cyan group-hover:scale-105 transition-transform duration-300">
+            <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+              <span class="text-xl">⚡</span>
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-mono font-black text-lg tracking-tight text-white group-hover:text-cyan-300 transition-colors" dir="ltr">VibeCoder Kit</span>
+            <span class="text-[11px] text-slate-400 font-semibold -mt-1">دليل النجاة البرمجي</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links (Center) -->
+        <nav class="hidden md:flex items-center gap-8 text-sm font-bold text-slate-300">
+          <a href="#problem-solution" class="hover:text-cyan-400 transition-colors py-1">المشكلة والحل</a>
+          <a href="#features" class="hover:text-cyan-400 transition-colors py-1">محتويات الدليل</a>
+          <a href="#target-audience" class="hover:text-cyan-400 transition-colors py-1">لمن هذا الدليل؟</a>
+          <a href="#testimonials" class="hover:text-cyan-400 transition-colors py-1">آراء المشترين</a>
+          <a href="#faq" class="hover:text-cyan-400 transition-colors py-1">الأسئلة الشائعة</a>
+        </nav>
+
+        <!-- Navbar Action Button (Left in RTL) -->
+        <div class="flex items-center gap-4">
+          <a href="checkout.html" class="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm bg-cyan-400 hover:bg-cyan-300 text-slate-950 shadow-glow-cyan hover:shadow-glow-cyan-lg transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200">
+            <span>شراء الدليل الآن</span>
+            <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button id="mobile-menu-btn" type="button" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none" aria-label="القائمة">
+            <svg id="hamburger-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+            </svg>
+            <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-slate-900/95 border-b border-slate-800 px-6 py-5 space-y-4">
+      <a href="#problem-solution" class="mobile-nav-link block font-bold text-slate-200 hover:text-cyan-400 py-2">المشكلة والحل</a>
+      <a href="#features" class="mobile-nav-link block font-bold text-slate-200 hover:text-cyan-400 py-2">محتويات الدليل</a>
+      <a href="#target-audience" class="mobile-nav-link block font-bold text-slate-200 hover:text-cyan-400 py-2">لمن هذا الدليل؟</a>
+      <a href="#testimonials" class="mobile-nav-link block font-bold text-slate-200 hover:text-cyan-400 py-2">آراء المشترين</a>
+      <a href="#faq" class="mobile-nav-link block font-bold text-slate-200 hover:text-cyan-400 py-2">الأسئلة الشائعة</a>
+      <div class="pt-3 border-t border-slate-800">
+        <a href="checkout.html" class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-base bg-cyan-400 hover:bg-cyan-300 text-slate-950 shadow-glow-cyan">
+          <span>شراء الدليل الآن (بريدي موب / البطاقة الذهبية)</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- 2. HERO SECTION -->
+  <!-- ========================================================================= -->
+  <section class="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden bg-slate-950">
+    
+    <!-- Background Ambient Glows -->
+    <div class="absolute top-1/4 -right-28 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-10 -left-28 w-96 h-96 bg-yellow-500/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:24px_24px] opacity-25 pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        
+        <!-- Right Column (Text & Value Proposition in RTL) -->
+        <div class="lg:col-span-7 flex flex-col items-start text-right">
+          
+          <!-- Announcement Badge -->
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-yellow-500/30 bg-yellow-950/30 text-yellow-300 text-xs sm:text-sm font-bold mb-6 backdrop-blur-sm animate-pulse-subtle">
+            <span class="w-2 h-2 rounded-full bg-yellow-400 animate-ping"></span>
+            <span>⚡ الإصدار العملي الشامل لرواد الـ Vibe Coding</span>
+          </div>
+
+          <!-- Main Arabic Headline -->
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.25] tracking-tight mb-3">
+            دليل عالق البرمجة
+            <span class="text-transparent bg-clip-text bg-gradient-to-l from-yellow-400 via-amber-300 to-yellow-500">بالذكاء الاصطناعي</span>
+          </h1>
+
+          <!-- English Subtitle (JetBrains Mono) -->
+          <div class="mb-6" dir="ltr">
+            <span class="font-mono font-bold text-xl sm:text-2xl lg:text-3xl text-cyan-400 tracking-wide block text-left">
+              The Stuck Vibe-Coder's Arabic Survival Kit
+            </span>
+          </div>
+
+          <!-- Description -->
+          <p class="text-lg sm:text-xl text-slate-300 leading-relaxed max-w-2xl mb-8 font-medium">
+            توقف عن الدوران في حلقات الأخطاء اللانهائية وشاشات الكونسول الحمراء. دليلك الميداني السريع باللغة العربية للانتقال من مجرد تجربة عشوائية إلى بناء وإطلاق تطبيقات حقيقية تعمل بكفاءة، مع برومبتات جاهزة للنسخ وحلول جراحية لمشاكل 
+            <bdi class="ltr-inline font-mono text-yellow-400 font-bold">Cursor</bdi> و
+            <bdi class="ltr-inline font-mono text-cyan-400 font-bold">Firebase</bdi> المعقدة.
+          </p>
+
+          <!-- Technology Badges -->
+          <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-10">
+            <span class="text-xs text-slate-400 font-bold ml-2">مُصمم ومُختبر مع:</span>
+            
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800/90 border border-slate-700 text-slate-200">
+              <span class="w-2 h-2 rounded-full bg-cyan-400"></span> Cursor AI
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800/90 border border-slate-700 text-slate-200">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span> Firebase
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800/90 border border-slate-700 text-slate-200">
+              <span class="w-2 h-2 rounded-full bg-purple-400"></span> Claude 3.7
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800/90 border border-slate-700 text-slate-200">
+              <span class="w-2 h-2 rounded-full bg-white"></span> Next.js
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800/90 border border-slate-700 text-slate-200">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Supabase
+            </span>
+          </div>
+
+          <!-- Massive Glowing Electric Yellow CTA Button (Algerian Local Payment) -->
+          <div class="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+            <a href="checkout.html" class="group inline-flex items-center justify-center gap-3 px-9 py-5 rounded-2xl font-black text-lg sm:text-xl bg-yellow-400 hover:bg-yellow-300 text-slate-950 shadow-glow-yellow hover:shadow-glow-yellow-lg transform hover:-translate-y-1 active:translate-y-0 transition-all duration-200 text-center">
+              <span>شراء الدليل الآن (بريدي موب / البطاقة الذهبية)</span>
+              <svg class="w-6 h-6 rtl:rotate-180 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Micro-Trust Bar -->
+          <div class="mt-6 flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-slate-400 font-semibold">
+            <div class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+              <span>تسليم مباشر بصيغة PDF</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-yellow-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.707 6.707a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span>دفع آمن عبر بريدي موب أو البطاقة الذهبية</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-cyan-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+              </svg>
+              <span>حماية كاملة لحقوق النسخ</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Left Column (3D Interactive E-Book Mockup in RTL) -->
+        <div class="lg:col-span-5 flex items-center justify-center relative book-perspective mt-6 lg:mt-0">
+          
+          <!-- Outer Ambient Glow Spheres -->
+          <div class="absolute w-80 h-80 bg-cyan-500/20 rounded-full blur-2xl"></div>
+          <div class="absolute -bottom-8 -right-8 w-64 h-64 bg-yellow-500/20 rounded-full blur-2xl"></div>
+
+          <!-- Floating Badge 1 (Top Left) -->
+          <div class="absolute -top-6 -left-4 z-20 hidden sm:flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-slate-900/90 border border-cyan-500/50 shadow-glow-cyan text-xs font-bold text-white animate-float-slow backdrop-blur-md">
+            <span class="text-base">🚀</span>
+            <div>
+              <div class="text-cyan-400 font-mono font-bold">+50 برومبت إنقاذ</div>
+              <div class="text-[10px] text-slate-400">جاهزة للنسخ المباشر</div>
+            </div>
+          </div>
+
+          <!-- Floating Badge 2 (Bottom Right) -->
+          <div class="absolute -bottom-6 -right-4 z-20 hidden sm:flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-slate-900/90 border border-yellow-500/50 shadow-glow-yellow text-xs font-bold text-white animate-float-delayed backdrop-blur-md">
+            <span class="text-base">🛡️</span>
+            <div>
+              <div class="text-yellow-400 font-bold">حلول أخطاء Firebase</div>
+              <div class="text-[10px] text-slate-400">وتجاوز حواجز الـ Auth</div>
+            </div>
+          </div>
+
+          <!-- 3D Book Object -->
+          <div id="interactive-book" class="book-container relative w-72 sm:w-80 h-[440px] sm:h-[480px] rounded-r-xl rounded-l-md shadow-3d-book cursor-pointer transform -rotate-y-12 rotate-x-6">
+            
+            <!-- Book Spine Simulation (Right edge in 3D) -->
+            <div class="book-spine"></div>
+            
+            <!-- Book Pages Thickness Simulation (Left edge) -->
+            <div class="book-pages"></div>
+
+            <!-- Book Front Cover -->
+            <div class="relative w-full h-full rounded-r-2xl rounded-l-md overflow-hidden bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border-2 border-cyan-500/40 p-7 flex flex-col justify-between shadow-2xl">
+              
+              <!-- Subtle decorative corner tech lines -->
+              <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-cyan-500/20 to-transparent pointer-events-none"></div>
+              <div class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-yellow-500/20 to-transparent pointer-events-none"></div>
+              
+              <!-- Cover Header -->
+              <div>
+                <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                  <span class="px-2.5 py-1 rounded bg-yellow-400 text-slate-950 font-black text-[10px] uppercase tracking-wider">
+                    إصدار الميدان 2025
+                  </span>
+                  <span class="font-mono text-xs text-cyan-400 font-bold" dir="ltr">VIBE-CODER KIT</span>
+                </div>
+                
+                <h3 class="text-2xl sm:text-3xl font-black text-white leading-tight mb-2">
+                  دليل عالق
+                  <span class="block text-yellow-400">البرمجة بالذكاء الاصطناعي</span>
+                </h3>
+
+                <p class="font-mono text-xs text-cyan-300 tracking-wide font-medium mt-1" dir="ltr">
+                  The Stuck Vibe-Coder's Arabic Survival Kit
+                </p>
+              </div>
+
+              <!-- Cover Center Emblem / Graphic -->
+              <div class="my-auto flex flex-col items-center justify-center py-4">
+                <div class="relative w-28 h-28 flex items-center justify-center">
+                  <div class="absolute inset-0 rounded-2xl bg-gradient-to-tr from-cyan-500 via-transparent to-yellow-500 opacity-30 animate-pulse"></div>
+                  <div class="w-24 h-24 rounded-2xl bg-slate-900/90 border border-slate-700/80 flex flex-col items-center justify-center p-3 text-center shadow-inner">
+                    <span class="text-3xl mb-1">⚡</span>
+                    <span class="font-mono text-[10px] text-cyan-400 font-black" dir="ltr">DEBUG & BUILD</span>
+                    <span class="text-[9px] text-slate-400 font-bold">بدون تعقيد</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Cover Footer -->
+              <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+                <div>
+                  <p class="text-[10px] text-slate-400 font-semibold">حزمة النجاة الكاملة لرواد الأعمال</p>
+                  <p class="text-xs text-white font-bold">تطوير الويب الحديث بالـ AI</p>
+                </div>
+                <div class="w-8 h-8 rounded-lg bg-cyan-950/80 border border-cyan-500/50 flex items-center justify-center text-cyan-400 text-sm font-bold">
+                  ✓
+                </div>
+              </div>
+
+              <!-- Glossy reflection overlay -->
+              <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none"></div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 2.5 AFFILIATE BANNER SECTION (برنامج شركاء النجاح) -->
+  <!-- ========================================================================= -->
+  <section class="relative py-8 bg-slate-950 border-t border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-950 border-2 border-yellow-500/50 p-6 sm:p-8 shadow-[0_0_30px_rgba(234,179,8,0.2)] backdrop-blur-md">
+        <!-- Ambient Backlight -->
+        <div class="absolute -top-12 -right-12 w-48 h-48 bg-yellow-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        
+        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div class="flex items-start sm:items-center gap-4 sm:gap-6 text-right">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-yellow-400 via-amber-500 to-yellow-600 p-0.5 shrink-0 shadow-glow-yellow">
+              <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center text-2xl sm:text-3xl">
+                💰
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="px-2.5 py-0.5 rounded-md bg-yellow-400/20 text-yellow-300 border border-yellow-500/30 text-xs font-bold flex items-center gap-1">
+                  <span>🤝</span>
+                  <span>عمولة نقدية 25%</span>
+                </span>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-black text-white leading-tight">
+                برنامج شركاء النجاح: اربح 25% عمولة نقدية!
+              </h3>
+              <p class="text-slate-300 text-xs sm:text-sm mt-1.5 leading-relaxed">
+                احصل على 500 دج تُحول مباشرة إلى حسابك في (بريدي موب) عن كل صديق يشتري الدليل باستخدام كود الإحالة الخاص بك. تفاصيل البرنامج مرفقة داخل الدليل.
+              </p>
+            </div>
+          </div>
+          <div class="shrink-0 w-full md:w-auto text-center">
+            <a href="checkout.html" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm bg-yellow-400 hover:bg-yellow-300 text-slate-950 shadow-glow-yellow transition-all duration-200 w-full md:w-auto">
+              <span>انضم واشترِ الآن</span>
+              <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 3. PROBLEM VS. SOLUTION SECTION -->
+  <!-- ========================================================================= -->
+  <section id="problem-solution" class="py-24 bg-slate-900 border-y border-slate-800 relative">
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="px-4 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-cyan-400 border border-cyan-500/30 inline-block mb-4">
+          المقارنة الحاسمة
+        </span>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4">
+          هل تجد نفسك عالقاً في هذا السيناريو يومياً؟
+        </h2>
+        <p class="text-slate-300 text-base sm:text-lg">
+          الذكاء الاصطناعي يكتب 80% من الكود في ثوانٍ، لكن الـ 20% المتبقية قد تسرق منك أياماً كاملة من الإحباط والتخبط. إليك الفرق بين المعاناة التقليدية والحل المباشر:
+        </p>
+      </div>
+
+      <!-- 2-Column Comparison Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+        
+        <!-- Right Side: The Problem (المشكلة) - Red/Pink Tinted Border -->
+        <div class="rounded-3xl p-8 sm:p-10 border-2 border-rose-500/40 bg-gradient-to-b from-rose-950/20 via-slate-900/90 to-slate-950/90 shadow-[0_0_35px_rgba(244,63,94,0.12)] flex flex-col justify-between">
+          <div>
+            <!-- Problem Header -->
+            <div class="flex items-center gap-4 mb-8 pb-5 border-b border-rose-500/20">
+              <div class="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-2xl text-rose-400 shadow-inner">
+                ⚠️
+              </div>
+              <div>
+                <span class="text-xs font-mono font-bold text-rose-400 uppercase tracking-wider block" dir="ltr">THE PAIN POINTS</span>
+                <h3 class="text-2xl font-black text-white">المشكلة: عندما ينهار الكود فجأة</h3>
+              </div>
+            </div>
+
+            <!-- Problem List Items -->
+            <ul class="space-y-6">
+              <li class="flex items-start gap-4">
+                <div class="w-7 h-7 rounded-lg bg-rose-950/80 border border-rose-500/40 flex items-center justify-center text-rose-400 shrink-0 mt-1">
+                  ✕
+                </div>
+                <div>
+                  <h4 class="text-white font-bold text-base mb-1">جحيم الدروس الإنجليزية المعقدة (Tutorial Hell)</h4>
+                  <p class="text-slate-400 text-sm leading-relaxed">
+                    فيديوهات سريعة تفترض أنك مهندس برمجيات محترف، وتتجاهل المشاكل الحقيقية التي تظهر بمجرد كتابة أول سطر في مشروعك الخاص.
+                  </p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-4">
+                <div class="w-7 h-7 rounded-lg bg-rose-950/80 border border-rose-500/40 flex items-center justify-center text-rose-400 shrink-0 mt-1">
+                  ✕
+                </div>
+                <div>
+                  <h4 class="text-white font-bold text-base mb-1">حلقات هلوسة Cursor المتكررة (Infinite Loops)</h4>
+                  <p class="text-slate-400 text-sm leading-relaxed">
+                    تطلب من الذكاء الاصطناعي إصلاح خطأ، فيقوم بحذف أجزاء كانت تعمل ويستبدلها بأكواد جديدة تسبب أخطاء أشد تعقيداً.
+                  </p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-4">
+                <div class="w-7 h-7 rounded-lg bg-rose-950/80 border border-rose-500/40 flex items-center justify-center text-rose-400 shrink-0 mt-1">
+                  ✕
+                </div>
+                <div>
+                  <h4 class="text-white font-bold text-base mb-1">رعب المصطلحات التقنية المبهمة (Dev Jargon)</h4>
+                  <p class="text-slate-400 text-sm leading-relaxed">
+                    مصطلحات مثل <bdi class="ltr-inline font-mono text-rose-300">CORS Policy</bdi>, <bdi class="ltr-inline font-mono text-rose-300">Async/Await</bdi>, <bdi class="ltr-inline font-mono text-rose-300">Auth Tokens</bdi> تشعرك بالعجز التام دون شرح مبسط لوظيفتها العملية.
+                  </p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-4">
+                <div class="w-7 h-7 rounded-lg bg-rose-950/80 border border-rose-500/40 flex items-center justify-center text-rose-400 shrink-0 mt-1">
+                  ✕
+                </div>
+                <div>
+                  <h4 class="text-white font-bold text-base mb-1">عقدة قواعد البيانات ومصادقة المستخدمين (Firebase)</h4>
+                  <p class="text-slate-400 text-sm leading-relaxed">
+                    تصميم الواجهة يبدو جذاباً، ولكن عند الرغبة في تخزين بيانات حقيقية أو تسجيل دخول المستخدمين، يتعطل التطبيق تماماً.
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Problem Footer Warning -->
+          <div class="mt-8 pt-4 border-t border-rose-500/20 text-xs text-rose-300 font-semibold flex items-center gap-2">
+            <span>🛑</span>
+            <span>النتيجة الحتمية: التخلي عن الفكرة وتراكم المشاريع غير المكتملة في جهازك.</span>
+          </div>
+        </div>
+
+        <!-- Left Side: The Solution (الحل) - Emerald/Teal Tinted Border -->
+        <div class="rounded-3xl p-8 sm:p-10 border-2 border-emerald-500/40 bg-gradient-to-b from-emerald-950/20 via-slate-900/90 to-slate-950/90 shadow-[0_0_35px_rgba(16,185,129,0.12)] flex flex-col justify-between">
+          <div>
+            <!-- Solution Header -->
+            <div class="flex items-center gap-4 mb-8 pb-5 border-b border-emerald-500/20">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-2xl text-emerald-400 shadow-inner">
+                ✨
+              </div>
+              <div>
+                <span class="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider block" dir="ltr">THE SOLUTION</span>
+                <h3 class="text-2xl font-black text-white">الحل: دليل النجاة والإنقاذ السريع</h3>
+              </div>
+            </div>
+
+            <!-- Solution List Items -->
+            <ul class="space-y-6 mb-8">
+              <li class="flex items-start gap-4">
+                <div class="w-7 h-7 rounded-lg bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0 mt-1">
+                  ✓
+                </div>
+                <div>
+                  <h4 class="text-white font-bold text-base mb-1">شروحات عربية واضحة ومباشرة للميدان</h4>
+                  <p class="text-slate-300 text-sm leading-relaxed">
+                    محتوى مكثف يركز على التطبيق الفعلي، بدون تنظير أكاديمي أو شروحات نظرية لا فائدة منها في رحلتك الريادية.
+                  </p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-4">
+                <div class="w-7 h-7 rounded-lg bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0 mt-1">
+                  ✓
+                </div>
+                <div>
+                  <h4 class="text-white font-bold text-base mb-1">بروتوكول ترويض الـ AI وكسر الهلوسة</h4>
+                  <p class="text-slate-300 text-sm leading-relaxed">
+                    صيغ هندسية محكمة تجبر محرر Cursor و Claude على التوقف عن العبث وتوجيه التعديل فقط للسطر المسبب للمشكلة.
+                  </p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-4">
+                <div class="w-7 h-7 rounded-lg bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0 mt-1">
+                  ✓
+                </div>
+                <div>
+                  <h4 class="text-white font-bold text-base mb-1">القاموس المزدوج لمصطلحات التطوير</h4>
+                  <p class="text-slate-300 text-sm leading-relaxed">
+                    فك شفرة كافة المصطلحات الإنجليزية المعقدة بمفاهيم عملية مبسطة وأمثلة واقعية تفهمها من أول قراءة.
+                  </p>
+                </div>
+              </li>
+            </ul>
+
+            <!-- STYLIZED CODE EDITOR BLOCK (Paste-This Troubleshooting Prompt) -->
+            <div class="rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden shadow-2xl">
+              <!-- Editor Top Bar -->
+              <div class="px-4 py-2.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between" dir="ltr">
+                <div class="flex items-center gap-2">
+                  <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+                  <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                  <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+                  <span class="font-mono text-xs text-slate-400 font-semibold ml-2">vibe-coder-rescue-prompt.txt</span>
+                </div>
+                
+                <!-- Copy Prompt Button with Vanilla JS feedback -->
+                <button id="copy-prompt-btn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-mono font-bold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/30 transition-colors">
+                  <svg id="copy-icon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
+                  </svg>
+                  <span id="copy-text">نسخ الأمر الجاهز</span>
+                </button>
+              </div>
+
+              <!-- Editor Code Content -->
+              <div class="p-4 font-mono text-xs text-slate-300 leading-relaxed overflow-x-auto code-scroll bg-slate-950/90 text-left" dir="ltr">
+                <p class="text-cyan-400 font-bold mb-1">// ⚡ برومبت الإنقاذ الفوري عند تجمد الكود أو هلوسة Cursor</p>
+                <p class="text-yellow-400 font-semibold">[ROLE: Senior Staff Full-Stack Debugger]</p>
+                <p class="text-slate-300">You must STOP rewriting functioning components.</p>
+                <p class="text-slate-400">1. Pinpoint the root cause of the error below.</p>
+                <p class="text-slate-400">2. Provide ONLY the precise, minimal code diff for the broken function.</p>
+                <p class="text-slate-400">3. Explain the fix in clear, simple Arabic without jargon.</p>
+                <p class="text-rose-400 mt-1">ERROR CONTEXT: &lt;Paste your console / terminal error here&gt;</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Solution Footer Check -->
+          <div class="mt-6 pt-4 border-t border-emerald-500/20 text-xs text-emerald-300 font-semibold flex items-center gap-2">
+            <span>🚀</span>
+            <span>النتيجة: إطلاق تطبيقاتك الحقيقية بثقة وسرعة وبدون الحاجة لتوظيف فريق مبرمجين مكلف.</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 4. MIDDLE FEATURES (CLEAN LIGHT BACKGROUND: BG-SLATE-50 / BG-WHITE) -->
+  <!-- ========================================================================= -->
+  <section id="features" class="py-24 bg-slate-50 text-slate-900 relative">
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Part 1: What's Inside (ماذا يوجد داخل الدليل؟) -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="px-4 py-1.5 rounded-full text-xs font-bold bg-cyan-100 text-cyan-800 border border-cyan-300 inline-block mb-4">
+          نظرة مفصلة للمحتوى
+        </span>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 mb-4">
+          ماذا يوجد داخل الدليل؟
+        </h2>
+        <p class="text-slate-600 text-base sm:text-lg">
+          حزمة رقمية مركزة تم إعدادها بعناية لتوفر عليك مئات الساعات من المحاولات العشوائية، مقسمة لـ 6 ركائز أساسية:
+        </p>
+      </div>
+
+      <!-- 6-Card Grid with Subtle Shadows & Refined Aesthetics -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
+        
+        <!-- Card 1: Setup Checklist -->
+        <div class="group bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-cyan-50 border border-cyan-200 flex items-center justify-center text-3xl mb-6 text-cyan-600 group-hover:scale-110 transition-transform">
+              ⚙️
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-mono font-bold text-cyan-600" dir="ltr">MODULE 01</span>
+            </div>
+            <h3 class="text-xl font-black text-slate-900 mb-3">قائمة التحقق للإعداد التقني (Setup Checklist)</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              تجهيز بيئة العمل المثالية من الصفر، إعدادات محرر Cursor الموصى بها، ملفات التكوين الصحيحة، وتجنب فخاخ التهيئة التي تدمر المشاريع قبل أن تبدأ.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-cyan-700">
+            <span>تجهيز بيئة عمل احترافية</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Bilingual Dev Glossary -->
+        <div class="group bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-yellow-50 border border-yellow-200 flex items-center justify-center text-3xl mb-6 text-yellow-600 group-hover:scale-110 transition-transform">
+              📖
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-mono font-bold text-yellow-600" dir="ltr">MODULE 02</span>
+            </div>
+            <h3 class="text-xl font-black text-slate-900 mb-3">القاموس المزدوج لمصطلحات البرمجة (Bilingual Glossary)</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              فك شفرة أكثر من 120 مصطلحاً برمجياً باللغة الإنجليزية مع ترجمة وظيفية مبسطة باللغة العربية تشرح لك ماذا يعني المصطلح وما هو تأثيره المباشر على مشروعك.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-yellow-700">
+            <span>شرح مبسط بدون تعقيد أكاديمي</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Paste-This Prompts -->
+        <div class="group bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-3xl mb-6 text-emerald-600 group-hover:scale-110 transition-transform">
+              🎯
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-mono font-bold text-emerald-600" dir="ltr">MODULE 03</span>
+            </div>
+            <h3 class="text-xl font-black text-slate-900 mb-3">أوامر الإنقاذ والمعالجة السريعة (Paste-This Prompts)</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              بنك برومبتات استثنائية منقحة ومجربة لترويض الذكاء الاصطناعي عند التشتت، إجباره على كتابة كود جراحي نظيف، وتصحيح أخطاء الـ Frontend والـ Backend بثوانٍ.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-emerald-700">
+            <span>جاهزة للنسخ واللصق الفوري</span>
+          </div>
+        </div>
+
+        <!-- Card 4: Database & Firebase Survival -->
+        <div class="group bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-purple-50 border border-purple-200 flex items-center justify-center text-3xl mb-6 text-purple-600 group-hover:scale-110 transition-transform">
+              🔥
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-mono font-bold text-purple-600" dir="ltr">MODULE 04</span>
+            </div>
+            <h3 class="text-xl font-black text-slate-900 mb-3">دليل قواعد البيانات ومصادقة Firebase (Auth & DB)</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              خطوات واضحة لتسجيل وحفظ المستخدمين، تخزين البيانات بأمان، وضبط قواعد الوصول (Security Rules) في Firebase و Supabase بدون التعرض لثغرات أمنية.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-purple-700">
+            <span>حماية البيانات وحل أخطاء الصلاحيات</span>
+          </div>
+        </div>
+
+        <!-- Card 5: Cursor & Context Rules -->
+        <div class="group bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-3xl mb-6 text-indigo-600 group-hover:scale-110 transition-transform">
+              🧠
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-mono font-bold text-indigo-600" dir="ltr">MODULE 05</span>
+            </div>
+            <h3 class="text-xl font-black text-slate-900 mb-3">استراتيجيات ترويض السياق (.cursorrules Blueprint)</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              كيف تجعل الذكاء الاصطناعي يتذكر قواعدك الهندسية وتصميماتك عبر ملفات التكوين الذكية، لتقضي نهائياً على مشكلة نسيان الـ AI لبنية المشروع مع نموه.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-indigo-700">
+            <span>إدارة المشاريع الكبيرة بثبات</span>
+          </div>
+        </div>
+
+        <!-- Card 6: Zero to Deployment Guide -->
+        <div class="group bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center text-3xl mb-6 text-rose-600 group-hover:scale-110 transition-transform">
+              🚀
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-mono font-bold text-rose-600" dir="ltr">MODULE 06</span>
+            </div>
+            <h3 class="text-xl font-black text-slate-900 mb-3">خارطة طريق نشر المشروع على الويب (Deployment Guide)</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              خطوات حية لنشر موقعك على Vercel أو Netlify، ربط النطاق الخاص (Custom Domain)، حل أخطاء الـ Build الشائعة، والتأكد من جهوزية التطبيق للمستخدمين.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-rose-700">
+            <span>من شاشة جهازك إلى العالم الحقيقي</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Part 2: Target Audience (لمن هذا الدليل؟) -->
+      <div id="target-audience" class="pt-12 border-t border-slate-200">
+        
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <span class="px-4 py-1.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300 inline-block mb-4">
+            الفئة المستهدفة
+          </span>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 mb-4">
+            لمن هذا الدليل؟
+          </h2>
+          <p class="text-slate-600 text-base sm:text-lg">
+            تم تصميم هذا الدليل خصيصاً ليناسب الذين يريدون نتائج عملية سريعة دون قضاء سنوات في دراسة علوم الحاسب النظرية:
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          
+          <!-- Audience 1 -->
+          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:border-cyan-500 transition-colors">
+            <div class="text-3xl mb-4">💡</div>
+            <h3 class="font-black text-lg text-slate-900 mb-2">المبتدئون في الـ Vibe Coding</h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              كل من بدأ باستخدام أدوات الذكاء الاصطناعي ولديه أفكار رائعة لكنه يصطدم بالأخطاء البرمجية ولا يدري كيف يصلحها.
+            </p>
+          </div>
+
+          <!-- Audience 2 -->
+          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:border-yellow-500 transition-colors">
+            <div class="text-3xl mb-4">💼</div>
+            <h3 class="font-black text-lg text-slate-900 mb-2">رواد الأعمال والمستقلون (Indie Hackers)</h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              أصحاب المشاريع الذين يريدون بناء وإطلاق نماذج عملهم الأولية (MVPs) بأنفسهم بأسرع وقت وأقل تكلفة ممكنة.
+            </p>
+          </div>
+
+          <!-- Audience 3 -->
+          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:border-emerald-500 transition-colors">
+            <div class="text-3xl mb-4">🎨</div>
+            <h3 class="font-black text-lg text-slate-900 mb-2">المصممون وصناع المحتوى</h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              المصممون المبدعون الذين يرغبون في تحويل تصاميمهم في Figma إلى مواقع وتطبيقات تفاعلية حية بدون وسيط برمجي.
+            </p>
+          </div>
+
+          <!-- Audience 4 -->
+          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:border-purple-500 transition-colors">
+            <div class="text-3xl mb-4">🎓</div>
+            <h3 class="font-black text-lg text-slate-900 mb-2">الطلاب والمهتمون بالتقنية</h3>
+            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              الراغبون في ركوب موجة هندسة الذكاء الاصطناعي وبناء معرض أعمال برمجي قوي يفتح لهم آفاقاً مهنية واستثمارية واسعة.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Audience Checklist Affirmation Box -->
+        <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl p-8 sm:p-10 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
+          <div class="space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-400 text-slate-950 font-bold text-xs">
+              <span>تأكيد الملاءمة</span>
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-black">هل هذا الدليل ملائم لحالتك بالتحديد؟</h3>
+            <p class="text-slate-300 text-sm max-w-xl">
+              إذا كانت لديك رغبة حقيقية في بناء تطبيقك الخاص وتعبت من الاستسلام عند ظهور أول رسالة خطأ باللون الأحمر.. فهذا الدليل صُمم لك بالكامل.
+            </p>
+          </div>
+          
+          <a href="checkout.html" class="shrink-0 inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-black text-base bg-yellow-400 hover:bg-yellow-300 text-slate-950 shadow-glow-yellow transition-all duration-200">
+            <span>شراء الدليل الآن (بريدي موب / البطاقة الذهبية)</span>
+            <svg class="w-5 h-5 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 5. SOCIAL PROOF (TESTIMONIALS) - RETURNING TO DARK THEME -->
+  <!-- ========================================================================= -->
+  <section id="testimonials" class="py-24 bg-slate-950 border-t border-slate-800 relative">
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="px-4 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-yellow-400 border border-yellow-500/30 inline-block mb-4">
+          شهادات موثوقة
+        </span>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4">
+          ماذا يقول صانعو التطبيقات عن الدليل؟
+        </h2>
+        <p class="text-slate-400 text-base sm:text-lg">
+          تجارب حقيقية لمطورين مستقلين ورواد أعمال استطاعوا اختصار أسابيع من الإحباط وتجاوز مشاكل الكود الصعبة:
+        </p>
+      </div>
+
+      <!-- 3 Testimonial Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Review 1 -->
+        <div class="glass-card-dark rounded-3xl p-8 border border-slate-800 hover:border-slate-700 transition-all duration-300 flex flex-col justify-between shadow-lg">
+          <div>
+            <!-- Stars -->
+            <div class="flex items-center gap-1 text-yellow-400 mb-6 text-lg">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              <span class="text-xs font-mono font-bold text-slate-400 mr-2" dir="ltr">(5.0)</span>
+            </div>
+
+            <!-- Quote -->
+            <p class="text-slate-200 text-sm sm:text-base leading-relaxed mb-6 font-medium">
+              "كنت عالقاً لأكثر من 5 أيام في مشكلة ربط مصادقة مستخدمي Firebase مع كود Cursor. قسم برومبتات الإنقاذ في الدليل ساعدني في حصر المشكلة وحلها في أقل من 10 دقائق حرفياً! هذا الدليل اختصر علي وقتاً لا يقدر بثمن."
+            </p>
+          </div>
+
+          <!-- User Info -->
+          <div class="pt-6 border-t border-slate-800 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-base shadow-glow-cyan">
+              ف.غ
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-sm">فيصل الغامدي</h4>
+              <p class="text-xs text-slate-400">مطور مستقل • تطبيق تجارة إلكترونية</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="glass-card-dark rounded-3xl p-8 border border-slate-800 hover:border-slate-700 transition-all duration-300 flex flex-col justify-between shadow-lg">
+          <div>
+            <!-- Stars -->
+            <div class="flex items-center gap-1 text-yellow-400 mb-6 text-lg">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              <span class="text-xs font-mono font-bold text-slate-400 mr-2" dir="ltr">(5.0)</span>
+            </div>
+
+            <!-- Quote -->
+            <p class="text-slate-200 text-sm sm:text-base leading-relaxed mb-6 font-medium">
+              "القاموس المزدوج وحده كنز حقيقي! دائماً ما كانت المصطلحات الإنجليزية مثل Webhooks و Environment Variables تشعرني بالارتباك والخوف من التعديل. الشرح هنا بصلب الموضوع وبدون أي تعقيد."
+            </p>
+          </div>
+
+          <!-- User Info -->
+          <div class="pt-6 border-t border-slate-800 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-yellow-500 to-amber-600 flex items-center justify-center text-slate-950 font-bold text-base shadow-glow-yellow">
+              س.ب
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-sm">سارة بنعلي</h4>
+              <p class="text-xs text-slate-400">مصممة واجهات ومبتكرة منتجات</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="glass-card-dark rounded-3xl p-8 border border-slate-800 hover:border-slate-700 transition-all duration-300 flex flex-col justify-between shadow-lg">
+          <div>
+            <!-- Stars -->
+            <div class="flex items-center gap-1 text-yellow-400 mb-6 text-lg">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+              <span class="text-xs font-mono font-bold text-slate-400 mr-2" dir="ltr">(5.0)</span>
+            </div>
+
+            <!-- Quote -->
+            <p class="text-slate-200 text-sm sm:text-base leading-relaxed mb-6 font-medium">
+              "إذا كنت تعتمد على Cursor أو Claude في بناء مشروعك، فهذا الدليل ليس خياراً بل أداة نجاة أساسية يجب أن تكون مفتوحة بجانبك دائماً. وفر علي مئات الساعات من التخبط وقراءة المقالات الأجنبية المعقدة."
+            </p>
+          </div>
+
+          <!-- User Info -->
+          <div class="pt-6 border-t border-slate-800 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-600 flex items-center justify-center text-white font-bold text-base">
+              ع.ش
+            </div>
+            <div>
+              <h4 class="font-bold text-white text-sm">عمر الشريف</h4>
+              <p class="text-xs text-slate-400">صانع محتوى • ناشئ في عالم الـ AI</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Trust Counters Bar -->
+      <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 p-8 rounded-3xl bg-slate-900/60 border border-slate-800 text-center">
+        <div>
+          <div class="text-2xl sm:text-3xl font-black text-cyan-400 font-mono">+50</div>
+          <div class="text-xs sm:text-sm text-slate-400 font-semibold mt-1">برومبت إنقاذ فوري</div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-black text-yellow-400 font-mono">+120</div>
+          <div class="text-xs sm:text-sm text-slate-400 font-semibold mt-1">مصطلح برمجي مشروح</div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-black text-emerald-400 font-mono">100%</div>
+          <div class="text-xs sm:text-sm text-slate-400 font-semibold mt-1">تطبيقي وعملي بالكامل</div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-black text-purple-400 font-mono">24/7</div>
+          <div class="text-xs sm:text-sm text-slate-400 font-semibold mt-1">وصول فوري بعد الشراء</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 6. FAQ (الأسئلة الشائعة) ACCORDION -->
+  <!-- ========================================================================= -->
+  <section id="faq" class="py-24 bg-slate-900 border-t border-slate-800 relative">
+    
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center mb-16">
+        <span class="px-4 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-cyan-400 border border-cyan-500/30 inline-block mb-4">
+          إجابات واضحة
+        </span>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4">
+          الأسئلة الشائعة
+        </h2>
+        <p class="text-slate-400 text-base sm:text-lg">
+          إليك أكثر الأسئلة التي يطرحها صناع التطبيقات قبل الحصول على دليل النجاة:
+        </p>
+      </div>
+
+      <!-- Accordion Container -->
+      <div class="space-y-4">
+        
+        <!-- FAQ Item 1 -->
+        <div class="faq-item rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden transition-colors">
+          <button type="button" class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
+            <span class="font-bold text-white text-base sm:text-lg">هل أحتاج لأي خبرة سابقة في البرمجة للاستفادة من الدليل؟</span>
+            <span class="faq-icon text-cyan-400 text-xl font-bold transition-transform duration-300">＋</span>
+          </button>
+          <div class="accordion-content">
+            <div class="p-6 pt-0 text-slate-300 text-sm sm:text-base leading-relaxed border-t border-slate-800/60">
+              لا على الإطلاق. الدليل كُتب خصيصاً ليخاطب المبتدئين ورواد الأعمال الذين يستخدمون أدوات الذكاء الاصطناعي لكتابة الأكواد (Vibe Coders). ستجد كل المفاهيم مشروحة بلغة بسيطة ومباشرة توضح لك ما الذي يجب أن تطلبه من الذكاء الاصطناعي وكيف توجهه لإصلاح الأخطاء بدون تعقيدات أكاديمية.
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ Item 2 -->
+        <div class="faq-item rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden transition-colors">
+          <button type="button" class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
+            <span class="font-bold text-white text-base sm:text-lg">كيف أستلم الدليل بعد إتمام عملية الطلب؟</span>
+            <span class="faq-icon text-cyan-400 text-xl font-bold transition-transform duration-300">＋</span>
+          </button>
+          <div class="accordion-content">
+            <div class="p-6 pt-0 text-slate-300 text-sm sm:text-base leading-relaxed border-t border-slate-800/60">
+              التسليم فوري ومباشر. بمجرد إتمام عملية الدفع عبر بريدي موب أو البطاقة الذهبية، ستتمكن من تحميل كتاب PDF عالي الدقة وكافة ملحقاته من البرومبتات والأكواد مباشرة، وستصلك نسخة إضافية على بريدك الإلكتروني.
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ Item 3 -->
+        <div class="faq-item rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden transition-colors">
+          <button type="button" class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
+            <span class="font-bold text-white text-base sm:text-lg">هل الدليل يفيدني إذا كنت أستخدم أدوات أخرى غير Cursor؟</span>
+            <span class="faq-icon text-cyan-400 text-xl font-bold transition-transform duration-300">＋</span>
+          </button>
+          <div class="accordion-content">
+            <div class="p-6 pt-0 text-slate-300 text-sm sm:text-base leading-relaxed border-t border-slate-800/60">
+              نعم بكل تأكيد! المبادئ الهندسية، والقاموس البرمجي، واستراتيجيات ترويض السياق، وبرومبتات الإنقاذ مصممة لتعمل بكفاءة فائقة على Claude, ChatGPT, Windsurf, Bolt.new, v0, Replit وكافة بيئات التطوير المعتمدة على نماذج الذكاء الاصطناعي.
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ Item 4 -->
+        <div class="faq-item rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden transition-colors">
+          <button type="button" class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
+            <span class="font-bold text-white text-base sm:text-lg">هل يتضمن الدليل تحديثات مستقبلية؟</span>
+            <span class="faq-icon text-cyan-400 text-xl font-bold transition-transform duration-300">＋</span>
+          </button>
+          <div class="accordion-content">
+            <div class="p-6 pt-0 text-slate-300 text-sm sm:text-base leading-relaxed border-t border-slate-800/60">
+              نعم، عالم الذكاء الاصطناعي يتطور أسبوعياً ولذلك نحرص على تحديث الدليل باستمرار. بمجرد حصولك على نسختك، ستتمكن من تحميل أي تحديثات قادمة أو برومبتات إضافية مجاناً ومباشرة عبر رابط التحميل الخاص بك.
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ Item 5 -->
+        <div class="faq-item rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden transition-colors">
+          <button type="button" class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
+            <span class="font-bold text-white text-base sm:text-lg">ما الذي يميز هذا الدليل عن الشروحات المجانية المتاحة على يوتيوب؟</span>
+            <span class="faq-icon text-cyan-400 text-xl font-bold transition-transform duration-300">＋</span>
+          </button>
+          <div class="accordion-content">
+            <div class="p-6 pt-0 text-slate-300 text-sm sm:text-base leading-relaxed border-t border-slate-800/60">
+              الفيديوهات المجانية مشتتة، وغالبيتها باللغة الإنجليزية وتتجاهل المشاكل الحقيقية التي تظهر في مرحلة التطبيق الفعلي. هذا الدليل يجمع لك خلاصة مئات الساعات من حل الأخطاء في مكان واحد منظم ومفهرس للبحث السريع، لتجده بجانبك دائماً في اللحظة التي يتعطل فيها الكود.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 7. FINAL BOTTOM CTA CARD -->
+  <!-- ========================================================================= -->
+  <section id="checkout" class="py-24 bg-slate-950 relative overflow-hidden">
+    
+    <!-- Radiant ambient backdrop -->
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.15),transparent_70%)] pointer-events-none"></div>
+
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <!-- High-Contrast Final Card -->
+      <div class="relative rounded-3xl p-8 sm:p-14 lg:p-16 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border-2 border-yellow-500/50 shadow-2xl text-center overflow-hidden">
+        
+        <!-- Glow accent rings -->
+        <div class="absolute top-0 right-1/2 translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-yellow-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <!-- Special Offer Badge -->
+        <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-yellow-400 text-slate-950 font-black text-sm mb-8 shadow-glow-yellow">
+          <span>⚡</span>
+          <span>عرض خاص ومتاح الآن للتحميل الفوري</span>
+        </div>
+
+        <!-- Final Punchy Headline -->
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight mb-6">
+          توقف عن إضاعة الساعات في معارك الذكاء الاصطناعي..
+          <span class="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-300 to-cyan-400 mt-2">
+            وابدأ في إطلاق مشاريعك اليوم!
+          </span>
+        </h2>
+
+        <!-- Reassuring Subtitle -->
+        <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
+          احصل على دليلك الرقمي الشامل الآن، وتسلح ببرومبتات الإنقاذ الجاهزة، والقاموس البرمجي، وحلول Firebase لتنقل أفكارك من مجرد أحلام إلى تطبيقات واقعية يراها المستخدمون.
+        </p>
+
+        <!-- Massive Glowing Electric Yellow CTA Button -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+          <a href="checkout.html" class="group inline-flex items-center justify-center gap-3 px-10 py-5 rounded-2xl font-black text-xl sm:text-2xl bg-yellow-400 hover:bg-yellow-300 text-slate-950 shadow-glow-yellow hover:shadow-glow-yellow-lg transform hover:-translate-y-1 active:translate-y-0 transition-all duration-200">
+            <span>شراء الدليل الآن (بريدي موب / البطاقة الذهبية)</span>
+            <svg class="w-6 h-6 rtl:rotate-180 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Microcopy & Guarantee Points -->
+        <div class="flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm text-slate-400 font-semibold pt-4 border-t border-slate-800/80">
+          <div class="flex items-center gap-2">
+            <span class="text-emerald-400">✓</span>
+            <span>تسليم فوري ومباشر بصيغة PDF</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-cyan-400">✓</span>
+            <span>تحديثات مستمرة وإضافات مجانية</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-yellow-400">✓</span>
+            <span>دفع آمن ومحمي 100% عبر بريدي موب / البطاقة الذهبية</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 8. FOOTER -->
+  <!-- ========================================================================= -->
+  <footer class="py-12 bg-slate-950 border-t border-slate-900 text-slate-400 text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        
+        <!-- Footer Brand -->
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-cyan-500 p-0.5">
+            <div class="w-full h-full bg-slate-950 rounded-[6px] flex items-center justify-center text-sm">
+              ⚡
+            </div>
+          </div>
+          <div>
+            <span class="font-mono font-bold text-white" dir="ltr">VibeCoder Kit</span>
+            <span class="text-xs text-slate-400 block">دليل عالق البرمجة بالذكاء الاصطناعي</span>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-400">
+          <a href="#problem-solution" class="hover:text-cyan-400 transition-colors">المشكلة والحل</a>
+          <a href="#features" class="hover:text-cyan-400 transition-colors">محتويات الدليل</a>
+          <a href="#target-audience" class="hover:text-cyan-400 transition-colors">لمن هذا الدليل؟</a>
+          <a href="#faq" class="hover:text-cyan-400 transition-colors">الأسئلة الشائعة</a>
+          <a href="checkout.html" class="text-yellow-400 hover:underline font-bold">شراء الدليل الآن</a>
+        </div>
+
+        <!-- Copyright -->
+        <div class="text-xs text-slate-400 text-center md:text-left" dir="ltr">
+          &copy; <span id="current-year">2025</span> VibeCoder Kit. All Rights Reserved.
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- 9. MINIMAL VANILLA JS (CRO INTERACTIONS, ACCORDION, COPY-TO-CLIPBOARD) -->
+  <!-- ========================================================================= -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Mobile Menu Toggle
+      const mobileBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const hamburgerIcon = document.getElementById('hamburger-icon');
+      const closeIcon = document.getElementById('close-icon');
+
+      if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', () => {
+          const isOpen = !mobileMenu.classList.contains('hidden');
+          if (isOpen) {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+          } else {
+            mobileMenu.classList.remove('hidden');
+            hamburgerIcon.classList.add('hidden');
+            closeIcon.classList.remove('hidden');
+          }
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+          link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+          });
+        });
+      }
+
+      // 2. Interactive FAQ Accordion
+      const faqToggles = document.querySelectorAll('.faq-toggle');
+      faqToggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+          const content = toggle.nextElementSibling;
+          const icon = toggle.querySelector('.faq-icon');
+          const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+
+          // Close other accordions
+          faqToggles.forEach(otherToggle => {
+            if (otherToggle !== toggle) {
+              otherToggle.setAttribute('aria-expanded', 'false');
+              otherToggle.nextElementSibling.classList.remove('open');
+              const otherIcon = otherToggle.querySelector('.faq-icon');
+              if (otherIcon) {
+                otherIcon.textContent = '＋';
+                otherIcon.classList.remove('rotate-45', 'text-yellow-400');
+                otherIcon.classList.add('text-cyan-400');
+              }
+            }
+          });
+
+          // Toggle current
+          if (isExpanded) {
+            toggle.setAttribute('aria-expanded', 'false');
+            content.classList.remove('open');
+            icon.textContent = '＋';
+            icon.classList.remove('rotate-45', 'text-yellow-400');
+            icon.classList.add('text-cyan-400');
+          } else {
+            toggle.setAttribute('aria-expanded', 'true');
+            content.classList.add('open');
+            icon.textContent = '✕';
+            icon.classList.add('rotate-45', 'text-yellow-400');
+            icon.classList.remove('text-cyan-400');
+          }
+        });
+      });
+
+      // 3. Copy-to-Clipboard for Rescue Prompt in Solution Section
+      const copyBtn = document.getElementById('copy-prompt-btn');
+      const copyText = document.getElementById('copy-text');
+      const promptToCopy = `[ROLE: Senior Staff Full-Stack Debugger]
+You must STOP rewriting functioning components.
+1. Pinpoint the root cause of the error below.
+2. Provide ONLY the precise, minimal code diff for the broken function.
+3. Explain the fix in clear, simple Arabic without jargon.
+ERROR CONTEXT: <Paste your console / terminal error here>`;
+
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(promptToCopy);
+            copyText.textContent = 'تم النسخ بنجاح! ✓';
+            copyBtn.classList.remove('text-cyan-300', 'bg-slate-800');
+            copyBtn.classList.add('text-slate-950', 'bg-emerald-400', 'border-emerald-300');
+            
+            setTimeout(() => {
+              copyText.textContent = 'نسخ الأمر الجاهز';
+              copyBtn.classList.remove('text-slate-950', 'bg-emerald-400', 'border-emerald-300');
+              copyBtn.classList.add('text-cyan-300', 'bg-slate-800');
+            }, 2500);
+          } catch (err) {
+            // Fallback for older browsers
+            const textarea = document.createElement('textarea');
+            textarea.value = promptToCopy;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            copyText.textContent = 'تم النسخ! ✓';
+            setTimeout(() => {
+              copyText.textContent = 'نسخ الأمر الجاهز';
+            }, 2000);
+          }
+        });
+      }
+
+      // 4. Interactive 3D Tilt on Book Mockup
+      const book = document.getElementById('interactive-book');
+      if (book && window.matchMedia('(pointer: fine)').matches) {
+        book.parentElement.addEventListener('mousemove', (e) => {
+          const rect = book.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          const rotateY = -(x / 14);
+          const rotateX = (y / 14);
+          book.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg) scale(1.03)`;
+        });
+
+        book.parentElement.addEventListener('mouseleave', () => {
+          book.style.transform = 'rotateY(-12deg) rotateX(6deg) scale(1)';
+        });
+      }
+
+      // 5. Dynamic Year
+      const yearEl = document.getElementById('current-year');
+      if (yearEl) {
+        yearEl.textContent = new Date().getFullYear();
+      }
+    });
+  </script>
+
+</body>
+</html>
